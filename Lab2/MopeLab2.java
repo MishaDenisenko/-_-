@@ -53,11 +53,11 @@ public class MopeLab2 {
                 }
             }
             else{
-                System.out.println("Потрибно задати ціле значення...");
+                System.out.println("Потрибно задати додатнє значення...");
             }
         }
         catch (Exception e){
-            System.out.println("Потрибно задати додатнє значення...");
+            System.out.println("Потрибно задати ціле значення...");
             m = 0;
         }
 

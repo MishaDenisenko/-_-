@@ -63,7 +63,7 @@ public class MopeLab4 {
         List<String> symbols = new ArrayList<>();
         double[] mx = new double[3];
         double sum;
-        double my;
+        double my = 0;
         double[] a = new double[3];
         double[] yAverage = new double[4];
         double[] bArr = new double[4];
@@ -171,43 +171,27 @@ public class MopeLab4 {
                     System.out.println();
                 }
 
-                for (int i = 0; i < 4; i++) {
-                    sum = 0;
-                    double[] yTemp;
-                    yTemp = y.get(i);
-                    for (int j = 0; j < m; j++) {
-                        sum += yTemp[j];
+                int l = xArr.length;
+
+                for (int i = 0; i < 3; i++) {
+                    for (int[] ints : xArr) {
+                        mx[i] += (double) ints[i] / l;
                     }
-                    yAverage[i] = sum / m;
+                }
+                for (double var : yAverage) {
+                    my += var / yAverage.length;
                 }
 
                 for (int i = 0; i < 3; i++) {
-                    sum = 0;
                     for (int j = 0; j < 4; j++) {
-                        sum += xArr[j][i];
+                        a[i] += (xArr[j][i] * yAverage[j]) / l;
                     }
-                    mx[i] = sum / 4;
-                }
-                sum = 0;
-                for (int i = 0; i < 4; i++) {
-                    sum += yAverage[i];
-                }
-                my = sum / 4;
-
-                for (int i = 0; i < 3; i++) {
-                    sum = 0;
-                    for (int j = 0; j < 4; j++) {
-                        sum += xArr[j][i] * yAverage[j];
-                    }
-                    a[i] = sum / 4;
                 }
 
                 for (int i = 0; i < 3; i++) {
-                    sum = 0;
-                    for (int j = 0; j < 4; j++) {
-                        sum += Math.pow(xArr[j][i], 2);
+                    for (int[] ints : xArr) {
+                        aKoef[i][i] += Math.pow(ints[i], 2) / l;
                     }
-                    aKoef[i][i] = sum / 4;
                 }
 
                 aKoef[0][1] = aKoef[1][0] = (xArr[0][0] * xArr[0][1] + xArr[1][0] * xArr[1][1] + xArr[2][0] * xArr[2][1] + xArr[3][0] * xArr[3][1]) / 4.;

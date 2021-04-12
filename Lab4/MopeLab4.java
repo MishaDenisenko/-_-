@@ -170,6 +170,16 @@ public class MopeLab4 {
                     }
                     System.out.println();
                 }
+                
+                for (int i = 0; i < 4; i++) {
+                    sum = 0;
+                    double[] yTemp;
+                    yTemp = y.get(i);
+                    for (int j = 0; j < m; j++) {
+                        sum += yTemp[j];
+                    }
+                    yAverage[i] = sum / m;
+                }
 
                 int l = xArr.length;
 

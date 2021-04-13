@@ -1,3 +1,4 @@
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -182,6 +183,9 @@ public class MopeLab3 {
             aKoef[0][1] = aKoef[1][0] = (xArr[0][0] * xArr[0][1] + xArr[1][0] * xArr[1][1] + xArr[2][0] * xArr[2][1] + xArr[3][0] * xArr[3][1]) / 4.;
             aKoef[0][2] = aKoef[2][0] = (xArr[0][0] * xArr[0][2] + xArr[1][0] * xArr[1][2] + xArr[2][0] * xArr[2][2] + xArr[3][0] * xArr[3][2]) / 4.;
             aKoef[1][2] = aKoef[2][1] = (xArr[0][1] * xArr[0][2] + xArr[1][1] * xArr[1][2] + xArr[2][1] * xArr[2][2] + xArr[3][1] * xArr[3][2]) / 4.;
+            
+            Instant startB = Instant.now();
+            System.out.println("\nstart = " + startB.getNano());
 
             double[][] matrixTemp1 = {
                     {my, mx[0], mx[1], mx[2]},
@@ -224,6 +228,11 @@ public class MopeLab3 {
             };
 
             bArr[3] = determinant(matrixTemp5) / determinant(matrixTemp2);
+            
+            Instant endB = Instant.now();
+            double timeLapsB = (endB.getNano()-startB.getNano())/1000000000f;
+            System.out.println("end = " + endB.getNano());
+            System.out.println("\nЧас пошуку коефіцієнтів b = " + timeLapsB + 'c');
 
             System.out.println("\nНатуралізоване рівняння регресії: ");
             System.out.printf("y = %.2f", bArr[0]);
@@ -248,6 +257,9 @@ public class MopeLab3 {
                     symbols.get(2), symbols.get(3), symbols.get(4), symbols.get(5));
             else System.out.printf("\nНатуралізовані коефіцієнти рівняння регресії b%s,b%s,b%s,b%s визначено неправильно",
                     symbols.get(2), symbols.get(3), symbols.get(4), symbols.get(5));
+            
+            Instant startA = Instant.now();
+            System.out.println("\n\nstart = " + startA.getNano());
 
             double[] aNorm = new double[4];
             sum = 0;
@@ -259,7 +271,14 @@ public class MopeLab3 {
             aNorm[1] = bArr[1]*(MaxX1 - MinX1)/2.;
             aNorm[2] = bArr[2]*(MaxX2 - MinX2)/2.;
             aNorm[3] = bArr[3]*(MaxX3 - MinX3)/2.;
+            
+            Instant endA = Instant.now();
 
+            double timeLapsA = (endA.getNano()-startA.getNano())/1000000000f;
+
+            System.out.println("end = " + endA.getNano());
+            System.out.println("\nЧас пошуку коефіцієнтів a = " + timeLapsA + 'c');
+            System.out.println("Загальний час пошуку коефіцієнтів = " + (timeLapsB + timeLapsA) + 'c');
 
             System.out.println("\nНормоване рівняння регресії: ");
             System.out.printf("y = %.2f", aNorm[0]);

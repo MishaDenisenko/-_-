@@ -1,9 +1,7 @@
-import math
-import random
+import math, random, numpy, time
 from _decimal import Decimal
 from itertools import compress
 from scipy.stats import f, t
-import numpy
 from functools import reduce
 
 SYMBOLS = ['\u2219', '\u00B2', '\u2260', '\u2248']
@@ -27,6 +25,8 @@ xL2 = 1.73 * (x2max - x02) + x02
 x03 = (x3min + x3max) / 2
 xl3 = -1.73 * (x3max - x03) + x03
 xL3 = 1.73 * (x3max - x03) + x03
+
+time_difference = 0
 
 norm_plan_raw = [[-1, -1, -1],
                  [-1, 1, 1],
@@ -122,11 +122,24 @@ def m_ij(*arrays):
 
 
 def find_coefficients(factors, y_vals):
+    global time_difference
+    start = time.time()
+    
     x_i = set_factors_table(factors)
     coefficients = [[m_ij(x_i(column), x_i(row)) for column in range(11)] for row in range(11)]
     y_numpy = list(map(lambda row: numpy.average(row), y_vals))
     free_values = [m_ij(y_numpy, x_i(i)) for i in range(11)]
     beta_coefficients = numpy.linalg.solve(coefficients, free_values)
+    
+    # создан дополнительный цикл для проверки реализации способа высчета времени
+    # при его работе интерпретатору необходимо дополнительно примерно 0.3-0.6 секунд
+    something = 0
+    for i in range(10000000):
+        something += 1
+
+    end = time.time()
+    
+    time_difference = end - start
     return list(beta_coefficients)
 
 
@@ -171,7 +184,6 @@ def student_criteria(m, N, y_table, beta_coefficients):
     q = 0.05
     t_our = get_student_value(f3, q)
     importance = ["важливий" if el > t_our else "неважливий" for el in list(t_i)]
-    # print result data
 
     b_coef = "Оцінки коефіцієнтів βs:"
     for beta in beta_coefficients:
@@ -187,7 +199,13 @@ def student_criteria(m, N, y_table, beta_coefficients):
     beta_i = ["βs0", "βs1", "βs2", "βs3", "βs12", "βs13", "βs23", "βs123", "βs1.1", "βs2.2", "βs3.3"]
     for i in range(len(beta_i)):
         print(f"{beta_i[i]} - {importance[i]}")
-    return importance
+        
+    print(f"\nЧас пошуку значимих коефіцієнтів - {round(time_difference, 4)}c.")
+    if time_difference > 0.1:
+        print("Час пошуку більше 0.1 секунди - модель не адекватна")
+        return False
+    else:
+        return importance
 
 
 def get_fisher_value(f3, f4, q):
@@ -229,5 +247,6 @@ print_matrix(m, N, natural_plan, y_arr)
 coefficients = find_coefficients(natural_plan, y_arr)
 print_equation(coefficients)
 importance = student_criteria(m, N, y_arr, coefficients)
-d = len(list(filter(None, importance)))
-fisher_criteria(m, N, d, natural_plan, y_arr, coefficients)
+if importance:
+    d = len(list(filter(None, importance)))
+    fisher_criteria(m, N, d, natural_plan, y_arr, coefficients)

@@ -7,15 +7,19 @@ public class MopeLab5 {
     static int x2max = 7;
     static int x3min = -10;
     static int x3max = 5;
-    static double x01 = (double) (x1max + x1min) / 2;
-    static double xl1 = -1.22 * (x1max - x01) + x01;
-    static double xL1 = 1.22 * (x1max - x01) + x01;
+    
+    // для чистоты кода я записал это выражение в переменные l∙∆xi + x0i, где ∆xi = ximax - x0i
+    // регистр буквы L в имени соотносится со значением так: большая бука L - большее значение, маленькая буква l - меньшее значение
+    // l я округлил до сотих для удобства расчета
+    static double x01 = (double) (x1max + x1min) / 2; 
+    static double xl1 = -1.22 * (x1max - x01) + x01; // -l∙∆x1 + x01, где ∆x1 = x1max - x01
+    static double xL1 = 1.22 * (x1max - x01) + x01; // l∙∆x1 + x01, где ∆x1 = x1max - x01
     static double x02 = (double) (x2max + x2min) / 2;
-    static double xl2 = -1.22 * (x2max - x02) + x02;
-    static double xL2 = 1.22 * (x2max - x02) + x02;
+    static double xl2 = -1.22 * (x2max - x02) + x02; // -l∙∆x2 + x02, где ∆x2 = x2max - x02
+    static double xL2 = 1.22 * (x2max - x02) + x02; // l∙∆x2 + x02, где ∆x2 = x2max - x02
     static double x03 = (double) (x3max + x3min) / 2;
-    static double xl3 = -1.22 * (x3max - x03) + x03;
-    static double xL3 = 1.22 * (x3max - x03) + x03;
+    static double xl3 = -1.22 * (x3max - x03) + x03; // -l∙∆x3 + x03, где ∆x3 = x3max - x03
+    static double xL3 = 1.22 * (x3max - x03) + x03; // l∙∆x3 + x03, где ∆x3 = x3max - x03
 
     static int m = 3;
 
